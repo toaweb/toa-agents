@@ -1,0 +1,41 @@
+/* Modern Corporate / Expressive Minimalism — token architecture
+ *
+ * PLACEHOLDER VALUES ONLY. Replace every value with the project's brand
+ * tokens before use. The structure is the deliverable, not the values.
+ */
+
+:root {
+  --color-canvas: #ffffff;
+  --color-surface: #f5f6f7;
+  --color-surface-strong: #e8eaed;
+  --color-text: #111317;
+  --color-text-muted: #5b626d;
+  --color-border: #c9cdd3;
+
+  --color-brand: #1646d8;
+  --color-brand-strong: #0c2f9f;
+  --color-accent: #d8ff3e;
+
+  --color-success: #147a45;
+  --color-warning: #9a5b00;
+  --color-error: #b42318;
+  --color-info: #175cd3;
+
+  --font-display: "Selected Display", sans-serif;
+  --font-body: "Selected Body", sans-serif;
+  --font-data: "Selected Data", monospace;
+
+  --page-max: 90rem;
+  --reading-max: 68ch;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+
+  --border-thin: 1px;
+  --border-strong: 2px;
+
+  --duration-fast: 120ms;
+  --duration-normal: 220ms;
+  --ease-standard: cubic-bezier(.2, .8, .2, 1);
+}
