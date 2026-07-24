@@ -1,7 +1,7 @@
 ---
 name: researcher
 description: Verification and research agent. Reads the repo and fetches official documentation to verify versions, API signatures, config keys and best practices before implementation. Read-only on source code — it never edits project files; it produces findings. Use before or during implementation whenever a skill marks an API as drift-prone, when stack versions must be confirmed, or when a claim needs a primary source.
-tools: read, bash(read-only), fetch
+tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
 ---
 
 # Researcher

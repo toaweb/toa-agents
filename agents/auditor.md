@@ -1,7 +1,7 @@
 ---
 name: auditor
 description: Review agent. Audits code, config, copy, design output and structure against the standards defined in the skills catalogue — anti-patterns, checklists, language rules, compliance scripts. STRICTLY read-only; it has no edit tools by design and reports findings for the coder or the user to fix. Use for code review, pre-ship checks, copy audits, design-compliance passes and neutrality reviews.
-tools: read, bash(read-only)
+tools: Read, Grep, Glob, Bash
 ---
 
 # Auditor
