@@ -8,7 +8,7 @@ is pre-1.0 and moves fast.
 
 | Component | Notes |
 |---|---|
-| FastAPI | Pre-1.0, frequent releases (0.139.x at migration time). Verify current version; don't hardcode. |
+| FastAPI | Pre-1.0, frequent releases (0.136.3, May 2026, verified against PyPI July 2026). Verify current version; don't hardcode. |
 | Pydantic | v2 — validation & serialization. |
 | SQLAlchemy | 2.0 async ORM with `Mapped[T]` / `mapped_column`. |
 | Database | PostgreSQL 18 (stable since Sept 2025); works with 17+. Driver: `asyncpg`. |
@@ -77,11 +77,14 @@ Never use the deprecated `@app.on_event("startup")` / `("shutdown")` hooks.
 ## Database session dependency
 
 ```python
+from collections.abc import AsyncGenerator
 from typing import Annotated
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-async def get_db() -> AsyncSession:
+# A yielding dependency is a generator — annotate it as one.
+# `-> AsyncSession` runs, but fails strict type checking.
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
     async with SessionLocal() as session:
         yield session
 

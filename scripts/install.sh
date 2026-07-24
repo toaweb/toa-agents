@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
 #
 # Symlink every skill in this repo's skills/ into your Claude skills directory
-# (~/.claude/skills/ by default; override with CLAUDE_SKILLS_DIR).
+# (~/.claude/skills/ by default; override with CLAUDE_SKILLS_DIR), and every
+# agent in agents/ into your Claude agents directory (~/.claude/agents/ by
+# default; override with CLAUDE_AGENTS_DIR).
 #
-#   scripts/install.sh            link every skill
+# The agent files are canonical and client-neutral markdown. Claude Code reads
+# them directly; for other clients (Codex, OpenCode, ...) point the client at
+# the same files or add a translation step here — the repo stays the single
+# source of truth either way.
+#
+#   scripts/install.sh            link every skill + agent
 #   scripts/install.sh --dry-run  show what would happen, change nothing
 #
 # Properties:
@@ -107,6 +114,52 @@ for skill_path in "${skill_dirs[@]}"; do
     linked=$((linked + 1))
   fi
 done
+
+# --- link each agent ---------------------------------------------------------
+AGENTS_SRC="$REPO_ROOT/agents"
+AGENTS_TARGET_DIR="${CLAUDE_AGENTS_DIR:-$HOME/.claude/agents}"
+
+if [ -d "$AGENTS_SRC" ]; then
+  echo
+  echo "Agents: $AGENTS_TARGET_DIR"
+  if [ ! -d "$AGENTS_TARGET_DIR" ]; then
+    echo "[MKDIR] $AGENTS_TARGET_DIR"
+    run mkdir -p "$AGENTS_TARGET_DIR"
+  fi
+
+  shopt -s nullglob
+  agent_files=("$AGENTS_SRC"/*.md)
+  shopt -u nullglob
+
+  for src in "${agent_files[@]}"; do
+    name="$(basename "$src")"
+    target="$AGENTS_TARGET_DIR/$name"
+    src_canon="$(readlink -f "$src")"
+
+    if [ -L "$target" ]; then
+      resolved="$(readlink -f "$target" 2>/dev/null || true)"
+      if [ "$resolved" = "$src_canon" ]; then
+        echo "[OK]    $name -> already linked"
+        already=$((already + 1))
+      elif [ -n "$resolved" ] && [ "${resolved#"$REPO_ROOT_CANON"/}" != "$resolved" ]; then
+        echo "[RELINK] $name -> was $resolved"
+        run rm "$target"
+        run ln -s "$src" "$target"
+        relinked=$((relinked + 1))
+      else
+        echo "[WARN]  $name -> symlink points outside this repo ($resolved); left untouched"
+        warned=$((warned + 1))
+      fi
+    elif [ -e "$target" ]; then
+      echo "[WARN]  $name -> exists and is not a symlink; left untouched"
+      warned=$((warned + 1))
+    else
+      echo "[LINK]  $name -> $target"
+      run ln -s "$src" "$target"
+      linked=$((linked + 1))
+    fi
+  done
+fi
 
 # --- summary -----------------------------------------------------------------
 echo

@@ -36,21 +36,58 @@ NAME_CHARS = set("abcdefghijklmnopqrstuvwxyz0123456789-")
 REF_PREFIXES = ("references/", "assets/", "scripts/")
 
 # --- neutrality patterns -----------------------------------------------------
-# Whole-word terms (letters/digits/underscore boundaries) — avoids "describe"
-# matching "toascribe", "potato" matching "toa", etc.
-BRAND_WORD_TERMS = [
-    "toa", "toaweb", "gamingforge", "treorian", "torove", "hugoforge",
-    "toascribe", "toafleet", "toablog", "toacontact", "toaratings",
-    "toacomments", "toaservers", "toaportal", "authentik", "hetzner", "ax41",
-    "beszel", "traefik", "cloudflare",
-    "brand_color", "get_app_profile", "get_standard", "find_icon",
-    "list_design_styles", "get_design_style", "get_component", "get_gf_component",
-]
-# Substring terms containing non-word characters — matched literally.
-BRAND_SUBSTR_TERMS = [
-    "gf://", "toa://", "courier prime", "proxy network",
-    "/home/treorian", "/home/torove",
-]
+# The actual brand/personal term list is PRIVATE and lives in a gitignored
+# local file so the public repo never publishes your own vocabulary
+# (usernames, hostnames, internal tool names, brand hex colors, ...).
+#
+#   scripts/neutrality-terms.local.txt     one term per line, '#'-comments OK
+#
+# Term kinds (auto-detected per line):
+#   - hex color        e.g. `#2dd4bf` or `2dd4bf`  -> case-insensitive substring
+#                      match on `#<hex>` (3, 4, 6 or 8 hex digits)
+#   - substring term   contains any non-word char (space, /, :, .) ->
+#                      literal case-insensitive substring match
+#   - word term        plain word -> whole-word match (letters/digits/_
+#                      boundaries), so "describe" never matches a term "scribe"
+#
+# See scripts/neutrality-terms.example.txt for the format. Without the local
+# file, only the generic fallback below is checked.
+TERMS_LOCAL_FILE = os.path.join(SCRIPT_DIR, "neutrality-terms.local.txt")
+FALLBACK_WORD_TERMS = ["brand_color"]
+FALLBACK_SUBSTR_TERMS = ["/home/myuser"]
+FALLBACK_HEX_TERMS = []
+
+
+def _looks_like_hex(term):
+    t = term.lstrip("#")
+    return len(t) in (3, 4, 6, 8) and all(c in "0123456789abcdef" for c in t.lower())
+
+
+def load_neutrality_terms():
+    """Return (word_terms, substr_terms, hex_terms), all lowercase."""
+    if not os.path.isfile(TERMS_LOCAL_FILE):
+        return (list(FALLBACK_WORD_TERMS),
+                list(FALLBACK_SUBSTR_TERMS),
+                list(FALLBACK_HEX_TERMS))
+    words, substrs, hexes = [], [], []
+    with open(TERMS_LOCAL_FILE, "r", encoding="utf-8") as fh:
+        for raw in fh:
+            term = raw.split("#", 1)[0].strip().lower() if not raw.strip().startswith("#") else ""
+            # allow hex terms written with a leading '#': take the whole line then
+            if not term and raw.strip().startswith("#") and _looks_like_hex(raw.strip()):
+                term = raw.strip().lower()
+            if not term:
+                continue
+            if _looks_like_hex(term):
+                hexes.append("#" + term.lstrip("#"))
+            elif any(c not in WORD_CHARS for c in term):
+                substrs.append(term)
+            else:
+                words.append(term)
+    return words, substrs, hexes
+
+
+BRAND_WORD_TERMS, BRAND_SUBSTR_TERMS, BRAND_HEX_TERMS = load_neutrality_terms()
 
 # --- result model ------------------------------------------------------------
 
@@ -137,6 +174,40 @@ def neutrality_hits(body):
         for term in BRAND_SUBSTR_TERMS:
             if term in low:
                 hits.append((lineno, term))
+        for term in BRAND_HEX_TERMS:
+            # hex boundary: next char must not extend the hex value
+            idx = low.find(term)
+            while idx != -1:
+                after = low[idx + len(term)] if idx + len(term) < len(low) else ""
+                if after not in "0123456789abcdef":
+                    hits.append((lineno, term))
+                    break
+                idx = low.find(term, idx + 1)
+    return hits
+
+
+SCANNABLE_EXTS = (".md", ".css", ".py", ".sh", ".json", ".txt", ".yml", ".yaml",
+                  ".js", ".ts", ".html", ".toml")
+
+
+def neutrality_scan_dir(root, skip_rel=()):
+    """Scan every text file under root; return [(relpath:lineno, term)]."""
+    hits = []
+    for dirpath, _dirnames, filenames in os.walk(root):
+        for fn in sorted(filenames):
+            if not fn.lower().endswith(SCANNABLE_EXTS):
+                continue
+            fp = os.path.join(dirpath, fn)
+            rel = os.path.relpath(fp, root)
+            if rel in skip_rel:
+                continue
+            try:
+                with open(fp, "r", encoding="utf-8") as fh:
+                    text = fh.read()
+            except (OSError, UnicodeDecodeError):
+                continue
+            for lineno, term in neutrality_hits(text):
+                hits.append((f"{rel}:{lineno}", term))
     return hits
 
 
@@ -268,24 +339,60 @@ def validate_skill(skill_dir):
             if fn.endswith(".md") and ("references/" + fn) not in refs:
                 rep.add(WARN, f"references/{fn} exists but is not mentioned in SKILL.md")
 
-    # (h) neutrality — advisory, never a hard fail
-    hits = neutrality_hits(body)
-    # also scan reference files
-    if os.path.isdir(ref_dir):
-        for fn in sorted(os.listdir(ref_dir)):
-            fp = os.path.join(ref_dir, fn)
-            if os.path.isfile(fp):
-                with open(fp, "r", encoding="utf-8") as fh:
-                    for lineno, term in neutrality_hits(fh.read()):
-                        hits.append((f"references/{fn}:{lineno}", term))
+    # (h) neutrality — advisory, never a hard fail.
+    # Scans EVERY text file in the skill directory: SKILL.md including
+    # frontmatter, references/, assets/ (token CSS!), scripts/ — a brand hex
+    # in a token file must not slip through.
+    hits = neutrality_scan_dir(skill_dir)
     if hits:
         for loc, term in hits:
-            where = f"SKILL.md:{loc}" if isinstance(loc, int) else loc
-            rep.add(WARN, f"neutrality: '{term}' at {where} — review manually")
+            rep.add(WARN, f"neutrality: '{term}' at {loc} — review manually")
     else:
         rep.add(OK, "no brand/personal-path markers found")
+    if not os.path.isfile(TERMS_LOCAL_FILE):
+        rep.add(WARN, "neutrality: no scripts/neutrality-terms.local.txt — "
+                      "only the generic fallback terms were checked")
 
     return rep
+
+
+# --- agents validation -------------------------------------------------------
+
+AGENTS_DIR = os.path.join(REPO_ROOT, "agents")
+SKILL_LOOKUP_MARKER = "skills/"   # every agent must instruct a skills/ lookup
+
+
+def validate_agent(path):
+    rep = Report("agents/" + os.path.basename(path))
+    with open(path, "r", encoding="utf-8") as fh:
+        text = fh.read()
+    fm, body = split_frontmatter(text)
+    if fm is None:
+        rep.add(FAIL, "no valid --- frontmatter --- block")
+        return rep
+    for key in ("name", "description"):
+        if not fm.get(key):
+            rep.add(FAIL, f"frontmatter missing '{key}'")
+    if fm.get("name") and fm["name"] + ".md" != os.path.basename(path):
+        rep.add(FAIL, f"name '{fm['name']}' != filename '{os.path.basename(path)}'")
+    if SKILL_LOOKUP_MARKER not in body:
+        rep.add(FAIL, "agent never instructs a skills/ lookup — the skill-first "
+                      "workflow is the whole point; add the mandatory lookup step")
+    else:
+        rep.add(OK, "instructs a skills/ lookup")
+    for lineno, term in neutrality_hits(text):
+        rep.add(WARN, f"neutrality: '{term}' at line {lineno} — review manually")
+    if rep.result() == OK:
+        rep.add(OK, "frontmatter and skill-first workflow OK")
+    return rep
+
+
+def discover_agents():
+    if not os.path.isdir(AGENTS_DIR):
+        return []
+    return [os.path.join(AGENTS_DIR, f)
+            for f in sorted(os.listdir(AGENTS_DIR))
+            if f.endswith(".md")]
 
 
 # --- discovery ---------------------------------------------------------------
@@ -319,10 +426,39 @@ def generate_readme_table():
     return "\n".join(lines)
 
 
+# --- readme write ------------------------------------------------------------
+
+README_PATH = os.path.join(REPO_ROOT, "README.md")
+TABLE_BEGIN = "<!-- BEGIN SKILLS TABLE"
+TABLE_END = "<!-- END SKILLS TABLE -->"
+
+
+def write_readme_table():
+    """Replace the block between the BEGIN/END markers in README.md in place."""
+    with open(README_PATH, "r", encoding="utf-8") as fh:
+        text = fh.read()
+    begin = text.find(TABLE_BEGIN)
+    end = text.find(TABLE_END)
+    if begin == -1 or end == -1 or end < begin:
+        print("README.md: BEGIN/END SKILLS TABLE markers not found", file=sys.stderr)
+        return 1
+    begin_line_end = text.index("\n", begin) + 1
+    new = text[:begin_line_end] + generate_readme_table() + "\n" + text[end:]
+    if new == text:
+        print("README.md table already up to date")
+        return 0
+    with open(README_PATH, "w", encoding="utf-8") as fh:
+        fh.write(new)
+    print("README.md table updated")
+    return 0
+
+
 # --- main --------------------------------------------------------------------
 
 def main(argv):
     if "--readme" in argv:
+        if "--write" in argv:
+            return write_readme_table()
         print(generate_readme_table())
         return 0
 
@@ -334,8 +470,10 @@ def main(argv):
     any_fail = False
     counts = {OK: 0, WARN: 0, FAIL: 0}
 
-    for skill_dir in skills:
-        rep = validate_skill(skill_dir)
+    reports = [validate_skill(d) for d in skills]
+    reports += [validate_agent(p) for p in discover_agents()]
+
+    for rep in reports:
         res = rep.result()
         counts[res] += 1
         if res == FAIL:
@@ -347,8 +485,8 @@ def main(argv):
             print(f"  [{marker}] {msg}")
         print()
 
-    total = len(skills)
-    print(f"Summary: {total} skills — "
+    print(f"Summary: {len(reports)} checked "
+          f"({len(skills)} skills, {len(reports) - len(skills)} agents) — "
           f"{counts[OK]} OK, {counts[WARN]} WARN, {counts[FAIL]} FAIL")
     return 1 if any_fail else 0
 

@@ -48,7 +48,9 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',   // set to a current date per project
-  css: ['~/theme/styles/main.css'],
+  // theme/ lives at the PROJECT ROOT. In Nuxt 4, `~`/`@` resolve to srcDir
+  // (= app/), so use the rootDir alias `~~` for root-level paths.
+  css: ['~~/theme/styles/main.css'],
   vite: { plugins: [tailwindcss()] },
   modules: ['@pinia/nuxt', '@nuxt/image', 'nuxt-seo', '@nuxt/icon', '@nuxt/eslint'],
 })

@@ -995,6 +995,7 @@ Example brand-neutral token architecture:
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 1rem;
+  --radius-full: 9999px; /* pills, avatars — the only allowed radius above 1rem */
 
   --border-thin: 1px;
   --border-strong: 2px;

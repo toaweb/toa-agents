@@ -19,8 +19,13 @@ surface.
 
 ## Touch & input rules
 
-- **Touch targets:** at least 44×44px — `min-h-[44px] min-w-[44px]` (or padding
-  that reaches it) on anything tappable.
+- **Touch targets:** at least 44×44px — `min-h-11 min-w-11` (2.75rem = 44px on
+  the default scale; or padding that reaches it) on anything tappable. Never
+  arbitrary values like `min-h-[44px]` — this skill's own no-magic-numbers rule
+  applies here too.
+  - Standards note: WCAG 2.2 **AA** requires only 24×24px (SC 2.5.8); 44px is
+    the stricter AAA / platform-HIG bar. Hold the 44px house bar, but don't
+    cite it as the AA minimum.
 - **Form inputs:** always `text-base` (16px) minimum — smaller sizes trigger
   iOS's auto-zoom on focus.
 - **Global:** `touch-action: manipulation` to remove the 300ms tap delay and

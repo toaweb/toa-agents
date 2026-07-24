@@ -27,3 +27,6 @@ desktop.ini
 
 # Raw incoming design material (not repo content)
 _incoming/
+
+# Private neutrality vocabulary — NEVER commit
+scripts/neutrality-terms.local.txt

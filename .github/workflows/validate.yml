@@ -1,0 +1,23 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # No dependencies — the validator is stdlib-only by design.
+      # Note: neutrality runs with generic fallback terms only in CI, since
+      # the real term list is a gitignored local file. Full neutrality checks
+      # happen locally before pushing.
+      - run: python3 scripts/validate.py
+      - name: README table is up to date
+        run: |
+          python3 scripts/validate.py --readme --write
+          git diff --exit-code README.md

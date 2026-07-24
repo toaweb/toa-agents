@@ -1,0 +1,27 @@
+# Neutrality term list — EXAMPLE FILE (tracked in git).
+#
+# Copy this to scripts/neutrality-terms.local.txt (gitignored) and fill it
+# with YOUR real brand/personal vocabulary. The local file is what the
+# validator actually uses; this example only documents the format.
+#
+# Why local: the term list IS your private vocabulary — usernames, hostnames,
+# internal tool names, brand colors. Publishing the detector's dictionary in a
+# public repo defeats its purpose.
+#
+# Format: one term per line. '#' starts a comment. Kind is auto-detected:
+#
+#   word term      plain word            -> whole-word match
+#   substring      has space / : . / etc -> literal substring match
+#   hex color      3/4/6/8 hex digits    -> matches '#<hex>' with boundary
+#
+# Examples (replace with your own):
+
+mycompany            # company / brand name — cover every spelling variant
+myproduct
+myusername
+myserver01
+/home/myusername     # substring: private path
+myapp://             # substring: URL scheme
+my brand font        # substring: multi-word term
+2dd4bf               # hex: brand primary color
+ff6b6b               # hex: brand secondary color

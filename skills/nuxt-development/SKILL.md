@@ -5,8 +5,9 @@ description: Build and review Nuxt 4 + Vue 3 frontends — components, pages, la
 
 # Nuxt 4 + Vue 3 development
 
-Senior Nuxt 4 and Vue 3 specialist. Nuxt 4 is the current line (Nuxt 3 reached
-end of life in July 2026). Application code lives in `app/`, and several Vue 2 /
+Senior Nuxt 4 and Vue 3 specialist. Nuxt 4 is the current line (Nuxt 3 reaches
+end-of-life on July 31, 2026, and Nuxt 5 is being stabilised — expect a major
+on the horizon). Application code lives in `app/`, and several Vue 2 /
 Options-API / Nuxt 3-root habits are wrong here. Verify exact versions per
 project.
 

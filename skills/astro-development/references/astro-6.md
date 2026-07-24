@@ -88,10 +88,15 @@ const { Content } = await render(post);   // NOT post.render()
 
 ## Migration order (from Astro 5)
 
-1. Bump Node to 22.12.0+.
-2. Upgrade Zod to 4 and adjust any deprecated schema helpers.
+1. Bump Node to 22.12.0+ (Astro 6 also bundles Vite 7 — check Vite-specific
+   plugins/config against the Vite migration guide).
+2. Upgrade Zod to 4 and adjust any deprecated schema helpers. Note: `schema`
+   as an async function is deprecated — use a static schema property (or
+   `createSchema()`).
 3. Move `src/content/config.ts` → `src/content.config.ts`; convert every
-   collection to a `loader`.
+   collection to a `loader`. For large projects, the
+   `collectionsBackwardsCompat` flag in `astro.config.mjs` enables
+   incremental migration — convert collections one at a time.
 4. Remove any `slug` schema fields; replace `entry.slug` → `entry.id` and
    `entry.render()` → `render(entry)`.
 5. Replace `Astro.glob()` with `import.meta.glob()`.

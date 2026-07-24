@@ -20,9 +20,16 @@ skills/
     references/*.md        heavy detail (patterns, checklists, examples)
     assets/                optional (e.g. token CSS)
     scripts/               optional (e.g. a compliance check)
+  design-styles/          the style catalogue: one reference file per named style
+agents/
+  coder.md                generic implementation agent (full write access)
+  researcher.md           verification agent (read + fetch, no source edits)
+  auditor.md              review agent (strictly read-only)
 scripts/
   validate.py             structural + neutrality validator (no dependencies)
-  install.sh              symlink skills into ~/.claude/skills/
+  install.sh              symlink skills + agents into ~/.claude/
+  neutrality-terms.example.txt   format docs for the private term list
+  neutrality-terms.local.txt     YOUR terms — gitignored, never committed
 ```
 
 Each `SKILL.md` stays lean (under ~5000 tokens) and points at its `references/`
@@ -41,7 +48,47 @@ scripts/install.sh --dry-run  # show what would happen, change nothing
 
 The script uses absolute paths (the repo can live anywhere), is idempotent (safe
 to re-run), and refuses to overwrite anything that is not already a symlink into
-this repo — it warns instead. See `scripts/install.sh` for details.
+this repo — it warns instead. It also links `agents/*.md` into
+`~/.claude/agents/` (override with `CLAUDE_AGENTS_DIR`). See
+`scripts/install.sh` for details.
+
+## Agents
+
+Three generic agents — that is deliberate. **A skill is knowledge; an agent is
+an execution context.** Domain expertise lives in the skills so it loads
+on demand in any context; the agents differ only in *permissions*:
+
+| Agent | Access | Job |
+|---|---|---|
+| `coder` | full read/write, runs builds & tests | implements changes |
+| `researcher` | read + fetch, no source edits | verifies versions/APIs against primary sources |
+| `auditor` | strictly read-only | reviews against the standards the skills define |
+
+Every agent's first mandatory step is the **skills lookup**: find and read the
+matching `skills/<name>/SKILL.md` before doing domain work. That line is what
+makes the setup portable — Claude Code auto-triggers skills, other clients
+(Codex, OpenCode, …) do not, but the explicit instruction works everywhere.
+The agent files are canonical, client-neutral markdown; point each client at
+them (or add a translation step in `install.sh`) so this repo stays the single
+place anything is edited. `validate.py` fails any agent that drops the lookup
+instruction.
+
+Add a fourth agent only when a task genuinely needs different *permissions or
+tools* (e.g. a creative agent with image-generation tools) — never for
+knowledge; knowledge goes in a skill.
+
+## Design styles
+
+`skills/design-styles/` is the catalogue of named styles (brutalism, retro
+terminal, …): a router `SKILL.md` plus one complete, versioned definition per
+style under `references/`. When a user names a style, the agent reads that
+definition in full and designs to it — never from memory. Styles are
+brand-neutral method; the project's brand values are applied on top, from the
+project's own brand source. Styles big enough to carry their own scripts and
+assets (like `modern-corporate-design`) live as full skills, and the catalogue
+points to them.
+
+Adding a style = one reference file + one row in the catalogue table.
 
 ## Skills
 
@@ -50,18 +97,21 @@ this repo — it warns instead. See `scripts/install.sh` for details.
 |---|---|
 | `astro-development` | Build, review, and migrate Astro 6 sites — components, pages, layouts, content collections (Content Layer API), islands / partial hydration, SSR & SSG, integrations, and astro config. Also use when migrating an older Astro version or another framework to Astro 6, or when a code example uses removed Astro 5 patterns (entry.slug, entry.render(), Astro.glob(), legacy collections). Not for non-Astro frontends (standalone Vue/React/Nuxt apps) and not a general CSS/Tailwind skill — defer styling mechanics to a Tailwind skill. |
 | `bilingual-copyediting` | Check and fix written correctness in Norwegian (bokmål) and English user-facing copy — særskriving / compound errors, invented words, wrong word class, grammar and agreement, imperative-mood consistency, hyphen calques and translationese — and safeguard bilingual parity so neither language reads as a translation. Fixes correctness directly; proposes (never silently applies) anything touching voice, metaphor, register or deliberate style. Also owns two-tone headline mechanics, page-title vs display-heading distinctions, and flagging unsourced numbers. Use after writing or changing copy, before shipping a bilingual page, or to audit existing text. Not for visual/layout/token work, and not for languages outside Norwegian and English. |
+| `design-styles` | Catalogue of named web design styles with full, versioned definitions — brutalism / neo-brutalism, retro terminal / BBS / phosphor. Use whenever the user names a design style ("make it brutalist", "terminal look", "retro style") or asks which styles exist, so the style is designed to its documented definition instead of from memory. Each style is brand-neutral — project brand values are applied on top. For corporate / B2B / expressive minimalism use the modern-corporate-design skill instead; this catalogue covers the expressive directions. |
 | `fastapi-development` | Build and review FastAPI + Python backends — async route handlers, Pydantic v2 models, SQLAlchemy 2.0 async ORM, dependency injection, database sessions, Alembic migrations, and a layered router/service/repository architecture. Also use to modernize legacy patterns (Pydantic orm_mode, SQLAlchemy Column() style, @app.on_event startup hooks). Not for non-Python backends and not a database-design skill — defer schema and query design to a Postgres skill. |
+| `go-development` | Build and review Go services, APIs and CLIs — modern net/http routing (method + wildcard ServeMux patterns, Go 1.22+), log/slog structured logging, context propagation, error wrapping with errors.Is/As, generics where they earn their place, table-driven tests, module hygiene and cmd/ + internal/ project layout. Also use to modernize legacy patterns (ioutil, GOPATH-era layout, interface{} instead of any, third-party routers where the stdlib mux suffices, goroutines without a cancellation path). Not for non-Go backends — defer Python API work to the FastAPI skill — and not a database-design skill; defer schema and query design to the Postgres skill. |
 | `hugo-development` | Build and review Hugo Extended static sites on the new template system (Hugo 0.146+) — baseof.html at the layouts root, underscored _partials/_shortcodes/_markup, content organization with page bundles, taxonomies, front matter, Hugo Pipes asset processing, and Tailwind CSS v4 via css.TailwindCSS. Also use to migrate a site off the old layouts/_default/ layout or off the removed Tailwind standalone binary. Not for JS-framework sites (Astro, Nuxt) and not a general design/Tailwind token skill — defer token and design decisions to a Tailwind skill. |
 | `modern-corporate-design` | Design system for corporate, B2B, consulting, professional services, industrial, logistics, maritime, SaaS, finance, legal and institutional websites. Combines minimal discipline with one deliberate identity signal so the result does not read as a template. Use when building or reviewing sites where credibility, clarity and conversion matter more than visual expression, or when the user asks for a corporate, professional, B2B, institutional or "expressive minimalism" style. Not for consumer products, gaming, entertainment, creative portfolios or brutalist and retro directions. |
 | `nuxt-development` | Build and review Nuxt 4 + Vue 3 frontends — components, pages, layouts, composables, Pinia stores, plugins, nuxt.config, SSR/SSG, routing, SSR-safe state management and data fetching. Also use to modernize legacy patterns (Options API, code outside app/, @nuxtjs/tailwind, direct process.env, module-scoped refs that leak across SSR requests). Not for non-Nuxt frontends (Astro, a plain Vue SPA without Nuxt) and not a general Tailwind design skill — defer token and design decisions to a Tailwind skill. |
 | `postgres-development` | Design and operate PostgreSQL databases — schema and index design, SQLAlchemy 2.0 async models, Alembic migrations, query optimization, role/privilege setup, and administration. Covers Postgres 18 specifics (native uuidv7(), IDENTITY primary keys), least-privilege application roles, scram-sha-256 auth, and the asyncpg-vs-psycopg3 choice behind PgBouncer. Not a data-modeling skill for other databases (MySQL, SQLite) and not a backend/API skill — defer route and service design to a FastAPI or backend skill. |
+| `react-development` | Build and review React 19 SPAs and components — function components with TypeScript, hooks, React 19/19.2 APIs (Actions, useActionState, useOptimistic, use(), ref as prop, Activity, useEffectEvent), Vite scaffolding, state architecture (local vs context vs external store vs server state), and React Compiler implications for memoization. Also use to modernize legacy patterns (class components, forwardRef, defaultProps/propTypes, CRA, useEffect data fetching, manual memo everywhere). Not for Vue/Nuxt or Astro page work — inside Astro islands this skill owns component internals while the Astro skill owns integration — and not a styling skill; defer tokens and Tailwind mechanics to the Tailwind skill. Meta-framework routing and React Server Components infrastructure are out of scope. |
 | `tailwind-styling` | Style UIs with Tailwind CSS v4 and design tokens — CSS-first config with @theme, three-tier token systems (primitive → semantic → role), data-attribute theming (mode × brand) instead of dark: variants, @custom-variant, mobile-first responsive utilities, container queries, and animations. Also use to migrate off tailwind.config.js or the deprecated @astrojs/tailwind / @nuxtjs/tailwind plugins. Owns styling mechanics and token wiring; defer brand values, component logic and page structure to a design-system or framework skill. |
 | `web-art-direction` | Art-direct and produce web visuals — creative direction, image briefs and generation prompts, logo concept direction, hero and OG/social assets, favicon direction, crop strategy, and hand-off specs to implementation. Establishes a style direction and produces prompts, dimensions, crop-safe zones and placement rather than final production CSS. Reads the project's brand/design source (if any) for canonical colours, fonts and style before art-directing. Use when a surface needs a visual rather than a component, or to review whether an existing asset earns its place. Not for token decisions, component implementation or Tailwind mechanics — hand those to a design-system or framework skill. |
 <!-- END SKILLS TABLE -->
 
-> The table above is generated from each skill's frontmatter. Regenerate it with
-> `python3 scripts/validate.py --readme` and replace the block between the
-> `BEGIN/END SKILLS TABLE` markers — don't edit it by hand.
+> The table above is generated from each skill's frontmatter. Regenerate it
+> in place with `python3 scripts/validate.py --readme --write` — don't edit it
+> by hand. CI fails if the table is stale.
 
 ## Adding a new skill
 
@@ -115,7 +165,20 @@ this repo — it warns instead. See `scripts/install.sh` for details.
 | `description` ≥ ~15 words (states WHAT and WHEN) | WARN |
 | Body ≤ ~4000 tokens (ceiling ~5000) | WARN |
 | Reference file present but never mentioned | WARN |
-| Brand / personal-path / tooling markers | WARN (manual review) |
+| Brand / personal-path / tooling markers — scans **every** text file in the skill dir (frontmatter, `references/`, `assets/`, `scripts/`) | WARN (manual review) |
+| `agents/*.md`: frontmatter valid, name matches filename | FAIL |
+| `agents/*.md`: contains the mandatory `skills/` lookup instruction | FAIL |
+
+### The private neutrality term list
+
+The validator's brand markers load from `scripts/neutrality-terms.local.txt`
+(**gitignored**) — one term per line; plain words match whole-word, terms with
+non-word characters match as substrings, and hex values (with or without `#`)
+match as brand colors. The list is your private vocabulary — usernames,
+hostnames, brand hexes — which is exactly why it must never be committed to a
+public repo: publishing the detector's dictionary defeats its purpose. Copy
+`scripts/neutrality-terms.example.txt` to get started. Without the local file
+the validator warns and checks only generic fallbacks.
 
 ## Bringing your brand
 

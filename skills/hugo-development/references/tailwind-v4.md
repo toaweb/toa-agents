@@ -51,10 +51,13 @@ Note: if `hugo_stats.json` is in `.gitignore`, Tailwind will ignore it — the
 
 ```css
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";  /* only if installed in step 1 — drop both together */
 @source "hugo_stats.json";
 ```
 
-The `@source` directive points Tailwind at Hugo's generated class list.
+The `@source` directive points Tailwind at Hugo's generated class list. A
+plugin that is installed but never loaded with `@plugin` does nothing — keep
+the npm dependency and the `@plugin` line in sync.
 
 ## 4. layouts/_partials/css.html — processing partial
 
