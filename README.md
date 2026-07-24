@@ -27,6 +27,7 @@ agents/
   auditor.md              review agent (strictly read-only)
 scripts/
   validate.py             structural + neutrality validator (no dependencies)
+  sweep.py                brand sweep for ANY directory tree (migration/hygiene)
   install.sh              symlink skills + agents into ~/.claude/
   neutrality-terms.example.txt   format docs for the private term list
   neutrality-terms.local.txt     YOUR terms — gitignored, never committed
@@ -179,6 +180,24 @@ hostnames, brand hexes — which is exactly why it must never be committed to a
 public repo: publishing the detector's dictionary defeats its purpose. Copy
 `scripts/neutrality-terms.example.txt` to get started. Without the local file
 the validator warns and checks only generic fallbacks.
+
+### Sweeping other directories
+
+`scripts/sweep.py` runs the same matcher over **any** directory tree — old
+agent archives, project repos, `~/.claude/`, notes — for two jobs:
+
+1. **Migration inventory:** find every file still holding brand material, so
+   it can be moved to its canonical home (brand → the brand source, neutral
+   method → a skill here, stale → delete).
+2. **Hygiene check:** after migration, a clean sweep (exit 0) is the receipt
+   that nothing brand-specific remains scattered.
+
+```bash
+scripts/sweep.py ~/projects --exclude ~/projects/toa-rules --per-term
+```
+
+It skips VCS/dependency/build directories and binaries, excludes this repo
+itself by default (validate.py owns it), and exits 1 on any hit.
 
 ## Bringing your brand
 

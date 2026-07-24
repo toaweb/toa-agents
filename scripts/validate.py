@@ -63,9 +63,14 @@ def _looks_like_hex(term):
     return len(t) in (3, 4, 6, 8) and all(c in "0123456789abcdef" for c in t.lower())
 
 
-def load_neutrality_terms():
-    """Return (word_terms, substr_terms, hex_terms), all lowercase."""
-    if not os.path.isfile(TERMS_LOCAL_FILE):
+def load_neutrality_terms(path=None):
+    """Return (word_terms, substr_terms, hex_terms), all lowercase.
+
+    Reads `path` if given, else TERMS_LOCAL_FILE. Falls back to the generic
+    terms when the file does not exist.
+    """
+    path = path or TERMS_LOCAL_FILE
+    if not os.path.isfile(path):
         return (list(FALLBACK_WORD_TERMS),
                 list(FALLBACK_SUBSTR_TERMS),
                 list(FALLBACK_HEX_TERMS))
