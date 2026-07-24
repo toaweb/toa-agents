@@ -24,3 +24,6 @@ desktop.ini
 .env
 .env.*
 *.local
+
+# Raw incoming design material (not repo content)
+_incoming/

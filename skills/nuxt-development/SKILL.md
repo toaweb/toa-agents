@@ -55,6 +55,13 @@ stores call that layer, never raw `$fetch` inline.
    `references/patterns.md` — it holds the stack baseline, project structure,
    `nuxt.config.ts` baseline, the state/data-fetching decision rules, and the
    API-layer pattern.
+   - **Before writing any data-fetching code, fetch
+     https://nuxt.com/docs/4.x/getting-started/data-fetching and verify the
+     current `useFetch` / `useAsyncData` / `$fetch` signatures and return shape.
+     Do not write them from memory** — these signatures drift between minors.
+   - **Before placing app files, fetch
+     https://nuxt.com/docs/4.x/directory-structure/app/app and confirm the
+     current `app/` directory layout** rather than assuming a Nuxt 3 root structure.
 4. Keep styling decisions in a dedicated Tailwind skill; this skill owns
    structure, state and data flow.
 5. One Pinia store per domain; no monolithic stores.

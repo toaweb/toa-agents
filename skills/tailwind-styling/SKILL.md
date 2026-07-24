@@ -52,6 +52,13 @@ rather than reaching for `@apply`.
 2. **Before any token, theme, or dark-mode work**, read
    `references/theming.md` — the three-tier model, `@theme` vs `@theme inline`,
    data-attribute theming, `@custom-variant`, and the theme folder structure.
+   - **Before writing any `@theme` block or token config, fetch
+     https://tailwindcss.com/docs/theme and confirm the v4 CSS-first syntax. Do
+     not emit a `tailwind.config.js` token config from memory** — that is the v3
+     pattern.
+   - **Before using `@theme inline`, `@custom-variant`, or any `@`-directive,
+     fetch https://tailwindcss.com/docs/functions-and-directives and verify the
+     directive against the current docs.**
 3. **Before writing responsive markup**, read `references/mobile-first.md` —
    mobile-first rules, touch targets, form-input sizing, and container queries.
 4. Check the existing `theme/tokens/` before inventing any new value.

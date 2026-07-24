@@ -50,10 +50,17 @@ guessing.
 
 1. Confirm the Postgres version and whether the app/migration roles exist with
    the right privileges and a password.
+   - **Before relying on any Postgres 18 feature, fetch
+     https://www.postgresql.org/docs/18/release-18.html and confirm it against
+     the release notes** rather than from memory — the target server may be older.
 2. **Before writing models, migrations, or role setup**, read
    `references/patterns.md` — naming conventions, ID strategy (IDENTITY vs
    `uuidv7()`), the SQLAlchemy 2.0 model shape, the app-role `init.sql`, the
    Alembic commands, and the driver/PgBouncer note.
+   - **Before using `uuidv7()` or choosing an ID strategy, fetch
+     https://www.postgresql.org/docs/18/functions-uuid.html and confirm the
+     function and its signature on the target server. It is Postgres 18+** — do
+     not assume it on older servers.
 3. For any model change: autogenerate a migration, **read it**, then apply.
 4. Index foreign keys and frequent filter columns; `EXPLAIN ANALYZE` slow queries.
 5. Put `TimestampMixin` on every model.

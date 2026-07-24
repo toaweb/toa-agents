@@ -63,6 +63,8 @@ it before creating the brief.
    - implementation placement by stack
 6. **Before specifying any asset or prompt, read `references/asset-rules.md`** —
    the rules for hero images, OG/social, logos/marks, and generated images.
+   For OG/social image dimensions and the required `og:` meta, see the Open Graph
+   protocol reference: https://ogp.me/.
 7. Verify the result or brief against brand fit, legibility, contrast, cropping,
    performance, accessibility, and source/licensing risk.
 

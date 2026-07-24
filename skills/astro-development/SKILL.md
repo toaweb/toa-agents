@@ -48,11 +48,19 @@ fast loads, and WCAG 2.2 AA are part of "done", not follow-ups.
 ## Workflow
 
 1. Confirm the Astro version and adapter (SSR vs static) before writing code.
+   - **When migrating from Astro 5 or touching a removed API, fetch
+     https://docs.astro.build/en/guides/upgrade-to/v6/ first and check each
+     changed API (including the Zod 3 → 4 move) against the guide, not from
+     memory** — several v5 patterns were removed, not deprecated.
 2. For a new project, agree on the `src/` structure and package manager up
    front; don't assume one.
 3. **Before writing or editing any content collection**, read
    `references/astro-6.md` — it holds the current Content Layer config,
    schema, rendering, and the v6 migration checklist.
+   - **Before writing a content collection, fetch
+     https://docs.astro.build/en/guides/content-collections/ and verify the
+     Content Layer API (loader, schema, `render(entry)`) against the current
+     docs. Do not reproduce the Astro 5 collections API from memory.**
 4. Build content and page structure before styling. Defer Tailwind/CSS
    mechanics to a dedicated Tailwind skill.
 5. Keep client JS minimal — justify every `client:*` directive.

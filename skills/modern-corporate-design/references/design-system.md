@@ -1198,17 +1198,22 @@ The agent must not:
 
 This guide synthesizes current 2026 design direction with established accessibility and responsive-web standards.
 
-Key references:
+### Normative sources — authority; may be cited as requirements
 
-- Figma, *Top Web Design Trends for 2026*: https://www.figma.com/resource-library/web-design-trends/
-- Naturaily, *Web Design Trends 2026*: https://naturaily.com/blog/web-design-trends
-- Elementor, *Web Design Trends to Expect in 2026*: https://elementor.com/blog/web-design-trends-2026/
 - W3C, *Web Content Accessibility Guidelines 2.2*: https://www.w3.org/TR/WCAG22/
 - W3C, *How to Meet WCAG 2.2*: https://www.w3.org/WAI/WCAG22/quickref/
 - web.dev, *Responsive Web Design Basics*: https://web.dev/articles/responsive-web-design-basics
 - web.dev, *Responsive and Fluid Typography*: https://web.dev/articles/baseline-in-action-fluid-type
 - web.dev, *Image Performance*: https://web.dev/learn/performance/image-performance
 - web.dev, *Responsive Images*: https://web.dev/articles/responsive-images
+
+### Inspiration — not authority
+
+Time-bound trend articles. Do not cite any of these as justification for a design decision, and never treat them as equivalent to a normative source.
+
+- Figma, *Top Web Design Trends for 2026*: https://www.figma.com/resource-library/web-design-trends/
+- Naturaily, *Web Design Trends 2026*: https://naturaily.com/blog/web-design-trends
+- Elementor, *Web Design Trends to Expect in 2026*: https://elementor.com/blog/web-design-trends-2026/
 
 ---
 

@@ -55,6 +55,9 @@ each voice inside its own boundary.
 3. **Before editing Norwegian or English copy, read `references/language-rules.md`** —
    the Norwegian failure modes, the English "do not fix" list, bilingual parity,
    headline mechanics, and the claims/numbers policy.
+   - **When in doubt whether a Norwegian word or compound actually exists (or how
+     it is written as one word), look it up at https://ordbokene.no/ instead of
+     deciding from memory** — this is exactly where a model invents Norwegian.
 4. Locate the copy source — usually `src/i18n/**` or a content collection, not
    the component.
 5. Separate findings into **corrections** (apply) and **voice suggestions** (propose).

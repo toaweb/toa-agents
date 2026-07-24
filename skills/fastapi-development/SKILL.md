@@ -48,6 +48,13 @@ application role, never as the Postgres superuser.
    `references/patterns.md` — it holds the canonical project structure, the
    SQLAlchemy 2.0 and Pydantic v2 syntax, the `lifespan` and DB-dependency
    patterns, and the package/migration commands.
+   - **Before writing Pydantic schemas, fetch
+     https://pydantic.dev/docs/validation/latest/get-started/migration/ and
+     confirm v2 syntax (`model_config`, `from_attributes`). Do not write
+     `orm_mode` or other v1 patterns from memory.**
+   - **Before writing SQLAlchemy models, fetch
+     https://docs.sqlalchemy.org/en/20/orm/ and verify the 2.0 `Mapped[T]` /
+     `mapped_column` style** rather than the legacy `Column(...)` style.
 3. Keep routers thin; put logic in services; keep SQL in repositories.
 4. After any model change, autogenerate an Alembic revision and **review it**
    before applying.

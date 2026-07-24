@@ -1308,12 +1308,10 @@ The agent must not:
 
 ## 32. Research basis
 
-Key references:
+### Normative sources — authority; may be cited as requirements
 
-- Figma, *Top Web Design Trends for 2026*: https://www.figma.com/resource-library/web-design-trends/
-- It's Nice That, *The graphic trends you'll want to bookmark for 2026*: https://www.itsnicethat.com/features/forward-thinking-graphic-trends-2026-graphic-design-120126
-- Creative Bloq, *Graphic Design Trends for 2026*: https://www.creativebloq.com/design/graphic-design/texture-warmth-and-tactile-rebellion-the-big-graphic-design-trends-for-2026
-- Creative Bloq, *Illustration Trends for 2026*: https://www.creativebloq.com/art/illustration/messy-meaningful-and-made-by-humans-the-biggest-illustration-trends-for-2026
+Accessibility specs, plus the official icon-library homes (stable, authoritative for icon sourcing — verify each set's licence before use).
+
 - W3C, *Web Content Accessibility Guidelines 2.2*: https://www.w3.org/TR/WCAG22/
 - W3C, *Understanding Non-text Contrast*: https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html
 - web.dev, *Images and Accessibility*: https://web.dev/learn/accessibility/images
@@ -1321,6 +1319,15 @@ Key references:
 - web.dev, *Image Performance*: https://web.dev/learn/performance/image-performance
 - Bootstrap Icons, *Official SVG Icon Library*: https://icons.getbootstrap.com/
 - Iconify, *Open Source Icon Sets*: https://icon-sets.iconify.design/
+
+### Inspiration — not authority
+
+Time-bound trend articles. Do not cite any of these as justification for a design decision, and never treat them as equivalent to a normative source.
+
+- Figma, *Top Web Design Trends for 2026*: https://www.figma.com/resource-library/web-design-trends/
+- It's Nice That, *The graphic trends you'll want to bookmark for 2026*: https://www.itsnicethat.com/features/forward-thinking-graphic-trends-2026-graphic-design-120126
+- Creative Bloq, *Graphic Design Trends for 2026*: https://www.creativebloq.com/design/graphic-design/texture-warmth-and-tactile-rebellion-the-big-graphic-design-trends-for-2026
+- Creative Bloq, *Illustration Trends for 2026*: https://www.creativebloq.com/art/illustration/messy-meaningful-and-made-by-humans-the-biggest-illustration-trends-for-2026
 
 ---
 

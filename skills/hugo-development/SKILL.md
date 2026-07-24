@@ -56,9 +56,17 @@ sites, keep styles in the project's assets, not an installed theme.
 2. **Before touching layouts or the directory structure**, read
    `references/structure.md` — the new template-system tree, page bundles, and
    the Hugo Pipes conventions.
+   - **Before creating any layout directory, fetch
+     https://gohugo.io/templates/new-templatesystem-overview/ and confirm the
+     v0.146+ template system (underscored `_partials`/`_shortcodes`, no
+     `layouts/_default/`). Do not use the old layout tree from memory.**
 3. **Before any CSS / Tailwind work**, read `references/tailwind-v4.md` — the
    full npm + `hugo.toml` + `css.TailwindCSS` + `templates.Defer` pipeline.
    Defer token/design decisions to a dedicated Tailwind skill.
+   - **Before wiring the CSS pipeline, fetch
+     https://gohugo.io/functions/css/tailwindcss/ and verify the current
+     `css.TailwindCSS` usage and the required `buildStats` config** rather than
+     assuming the old standalone-binary flow.
 4. Put content functions in shortcodes, layout in partials.
 5. Run `hugo server` for development; build with `hugo --minify`.
 

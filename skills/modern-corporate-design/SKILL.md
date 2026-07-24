@@ -88,7 +88,9 @@ accessible interaction are visual-quality requirements, not later fixes.
 8. Read `references/visual-assets.md` before specifying photography,
    illustration, icons, charts, diagrams or maps.
 9. Design responsive behavior explicitly — do not leave it implied.
-10. Preserve WCAG 2.2 AA throughout.
+10. Preserve WCAG 2.2 AA throughout. **When a contrast, target-size or
+    non-text-contrast requirement is in doubt, check it against
+    https://www.w3.org/TR/WCAG22/ — it is normative; do not rely on memory.**
 11. Verify against the anti-patterns above before delivering.
 
 ## Brand values
