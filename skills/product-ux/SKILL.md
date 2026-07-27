@@ -1,91 +1,110 @@
 ---
 name: product-ux
-description: Product UI/UX patterns for application interfaces — admin panels, dashboards, internal tools, SaaS product surfaces, mobile and native apps, data tables, complex forms, multi-step workflows, notifications, AI-assisted features, and data visualization. Also covers the foundations they rest on: design tokens, component anatomy and states, UI content design, accessibility, and design-system governance. Use when designing or reviewing product UX (not marketing sites): "build an admin dashboard", "design this settings page", "how should this table/filter/bulk action work", "what should this error say", "pick the right chart". Brand-neutral and framework-neutral — visual identity comes from the project's brand source, page-level visual styles from the design-styles catalogue. Defer implementation mechanics to the framework and Tailwind skills.
+description: Product UI/UX for authenticated application interfaces — admin panels, dashboards, SaaS apps, user and customer portals, operational control panels, mobile products, data tables, complex forms, workflows and AI-assisted features. Covers the foundations they rest on (design tokens, component states, surfaces and affordance, dark mode, UI copy, illustration, accessibility) and constrained visual treatments for product surfaces (flat/elevated, glassmorphism, neumorphism, skeuomorphic controls). Use for anything behind a login: "build an admin dashboard", "design this settings page", "how should this table/filter/bulk action work", "what should this error say", "should this panel be glass". Separate from the design-styles catalogue, which covers public websites and marketing pages. Brand-neutral and framework-neutral — brand values come from the project; defer implementation mechanics to the framework and Tailwind skills.
 ---
 
 # Product UX
 
-Product interfaces are judged by task completion, not visual impression.
-This skill routes to normative references for designing them; read the
-relevant reference in full before designing — never from memory.
+Interfaces used *after authentication* — products, not marketing pages.
+They are judged by task completion, not visual impression. This skill
+routes to normative references; read the relevant one in full before
+designing, never from memory.
+
+## Scope boundary
+
+This is its own category, deliberately separate from the design-styles
+catalogue and from any website design system:
+
+| | Product UX (this skill) | design-styles |
+|---|---|---|
+| Surface | behind a login | public site, marketing, editorial |
+| Judged by | task completion, safety, state clarity | expression, identity, impression |
+| Visual layer | constrained *treatments* (below) | named *styles* (brutalist, editorial, …) |
+
+Glassmorphism, neumorphism, skeuomorphism and flat/elevated live **here**
+as product treatments with hard safety constraints — they are not entries
+in the design-styles catalogue and must not be applied from it.
 
 ## Precedence
 
 When guidance conflicts, resolve in this order:
 
 ```text
-accessibility and platform requirements
-→ foundations (tokens, states, content, a11y)
-→ product-UX structure and behavior
-→ product-category rules (admin / SaaS / mobile)
-→ visual design style
+safety, law, and platform requirements
+→ accessibility
+→ product task and information architecture
+→ foundations
+→ shared UX patterns
+→ application-type rules
+→ visual treatment
 → decorative detail
 ```
 
-A named visual style governs appearance only. It never overrides
-accessibility, platform behavior, task safety, or component semantics.
+A visual treatment must never override task clarity, component semantics,
+state visibility, accessibility, or operational safety.
 
 ## Workflow
 
-1. Classify the task, then read the matching reference(s) fully:
-   - Screen structure, components, density, tables, forms, states →
-     `references/ui-design-system.md`
-   - Task flows, navigation, search/filter, bulk actions, permissions,
-     notifications, error/empty/loading behavior →
-     `references/ux-workflows.md`
-   - Charts, dashboards, metrics, choosing and rendering visualizations →
-     `references/data-visualization.md`
-   - Authenticated SaaS app — shell, workspace/org model, onboarding,
-     settings, billing, integrations, trials/limits →
-     `references/saas-product-ui.md`
-   - Mobile or native surfaces — platform conventions, touch, safe areas,
-     offline, permissions, biometrics → `references/mobile-product-ui.md`
-   - AI suggestions, generation, agentic actions, review and reversibility →
-     `references/ai-assisted-interactions.md`
+1. **Classify the surface**, then read its application-type reference in
+   full — `saas-product-ui.md`, `user-portal-ui.md`,
+   `customer-portal-ui.md`, `analytics-dashboard-ui.md` or
+   `operational-control-panel-ui.md`. If none fits, the surface is a
+   generic admin/internal tool: use the core references below.
 
-   Most real tasks span two of these; read both rather than guessing.
+2. **Read the core references the task touches** —
+   `ui-design-system.md` (structure, components, density, tables, forms),
+   `ux-workflows.md` (task flows, search/filter, bulk actions,
+   permissions, notifications, error/empty/loading),
+   `data-visualization.md` (charts, dashboards, metrics).
+   Most real tasks span two; read both rather than guessing.
 
-2. Read the foundations the task touches:
-   - Token definition, naming, layering, theming, deprecation →
-     `references/design-tokens.md`
-   - A single component's API, anatomy, variants, state model →
-     `references/component-anatomy-states.md`
-   - Labels, errors, empty states, confirmations, terminology →
-     `references/content-design.md`
-   - Keyboard, focus, contrast, reflow, assistive-tech behavior →
-     `references/accessibility-foundations.md`
+3. **Read the foundations the task touches** — tokens, component states,
+   surfaces and affordance, dark mode, UI copy, illustration,
+   accessibility. See the table below.
 
-3. Apply the project's brand values on top (brand source: MCP server,
-   `brand.json`, or tokens — ask if absent, never invent). If the product
-   surface also has a named visual style, its definition in the
-   design-styles catalogue applies to the visual layer while these
-   references govern structure and behavior.
+4. **Add cross-cutting rules** where they apply: `mobile-product-ui.md`
+   for mobile or native surfaces, `ai-assisted-interactions.md` for any
+   generated, suggested or agentic behavior.
 
-4. Respect the references' normative language (must/should/may) and their
-   accessibility requirements — keyboard paths, focus, ARIA on complex
-   widgets are part of done.
+5. **Only then choose a visual treatment**, and only after the functional
+   model and every state are defined. Read the treatment's constraints in
+   full — each one lists contexts it must not be used in.
 
-5. When establishing or changing a shared design system rather than one
-   screen — ownership, contribution, releases, deprecation, design-code
-   parity → `references/design-system-governance.md`.
+6. **Apply the project's brand values on top** (brand source: MCP server,
+   `brand.json`, or tokens — ask if absent, never invent).
 
-6. Defer code mechanics to the framework/Tailwind skills.
+7. Respect the references' normative language (must/should/may). Keyboard
+   paths, focus, and ARIA on complex widgets are part of done.
+
+8. When changing a shared design system rather than one screen —
+   `design-system-governance.md`.
+
+9. Defer code mechanics to the framework/Tailwind skills.
 
 ## Reference files
 
-### Product UX core
+### Core product UX
 
 | File | Contents |
 |---|---|
-| `references/ui-design-system.md` | Enterprise UI system: layout/density, navigation chrome, tables, forms, feedback (incl. toasts), states, component rules |
+| `references/ui-design-system.md` | Product UI system: layout/density, navigation chrome, tables, forms, feedback (incl. toasts), states, component rules |
 | `references/ux-workflows.md` | Workflow patterns: task flows, search & filtering, bulk actions, permissions, notifications policy, error/empty/loading behavior |
 | `references/data-visualization.md` | Data visualization: chart selection, dashboards, metrics presentation, visualization accessibility |
 
-### Product categories
+### Application types
 
 | File | Contents |
 |---|---|
 | `references/saas-product-ui.md` | Authenticated SaaS app: shell, workspace/org switching, onboarding, settings architecture, billing, integrations, trials & limits, admin vs end-user UI |
+| `references/user-portal-ui.md` | Self-service portal for individuals: task-based navigation, status in plain language, requests, documents, consent/privacy, payments, human support routes |
+| `references/customer-portal-ui.md` | B2B/B2C customer portal: account & site scope, orders, deliveries, invoices, contracts, service cases, assets, customer-side roles |
+| `references/analytics-dashboard-ui.md` | Dashboards by type (operational/analytical/strategic/embedded): the dashboard question, KPI anatomy, filters, drill-down, real-time and stale data, saved views |
+| `references/operational-control-panel-ui.md` | High-consequence control: environment & live/simulation context, severity model, alarm anatomy, command lifecycle, authorization, audit, offline/degraded behavior |
+
+### Cross-cutting surfaces
+
+| File | Contents |
+|---|---|
 | `references/mobile-product-ui.md` | Mobile & native: platform conventions, one-handed use, touch targets, safe areas, offline, notifications, biometrics, permissions |
 | `references/ai-assisted-interactions.md` | AI in product UI: interaction types, entry points, output anatomy, grounding & sources, human review, agentic actions, reversibility, uncertainty |
 
@@ -95,8 +114,23 @@ accessibility, platform behavior, task safety, or component semantics.
 |---|---|
 | `references/design-tokens.md` | Token layers (primitive → semantic → component), naming, required domains, theme architecture, canonical source, versioning & deprecation |
 | `references/component-anatomy-states.md` | Component API and anatomy, state model, disabled vs read-only, loading, empty, error, composition, variants, maturity, quality gates |
+| `references/affordance-depth-and-surfaces.md` | What reads as interactive: surface hierarchy, affordance cues, flat vs bordered vs elevated, elevation semantics, tonal surfaces, drag, forced colors |
+| `references/dark-mode-theme-system.md` | Light/dark as a theme system: semantic roles per appearance, system/light/dark user control, contrast per state, theme-specific assets, charts, code, focus |
 | `references/content-design.md` | UI copy: labels, headings, instructions, error and empty-state text, confirmations, terminology, units, localization, AI-generated content |
+| `references/product-illustration-system.md` | Illustration inside products: roles, productive vs expressive, scale tiers, representation of people, technical accuracy, alt-text decisions, rights |
 | `references/accessibility-foundations.md` | Keyboard access, focus management, accessible names, dynamic updates, contrast, reflow, motion safety, testing strategy |
+
+### Visual treatments
+
+Read only after the functional model and states are defined. Each file
+states the contexts its treatment must **not** be used in.
+
+| File | Contents |
+|---|---|
+| `references/flat-and-elevated-ui.md` | The default combination: flat base, bordered forms, elevation reserved for real overlap; card types, navigation selection, dark-mode substitution |
+| `references/glassmorphism-translucent-ui.md` | Translucent materials: transient surfaces only, contrast against uncontrolled backgrounds, opaque fallback, reduced-transparency, performance, no glass over dense data |
+| `references/neumorphism-soft-ui-constraints.md` | Experimental and limited — mostly a guard: ruled out for forms, primary actions, auth, tables and regulated workflows; testing gate before any use |
+| `references/skeuomorphic-spatial-controls.md` | Physical metaphors and instruments: dials, switches, sliders, direct manipulation, precision entry, safety and simulation-vs-live distinction |
 
 ### System-level
 

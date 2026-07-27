@@ -1,4 +1,4 @@
-# Modern Enterprise UI / Operational Minimalism Design System
+# Product UI / Operational Minimalism Design System
 
 > Brand-neutral reference for admin panels, enterprise applications, SaaS back offices, operations systems, ERP, logistics tools, regulated workflows, and data-heavy web applications.
 >
@@ -8,7 +8,7 @@
 
 ## 1. Purpose
 
-Modern Enterprise UI is designed for software people use repeatedly to complete real work. The interface must make complex tasks understandable, efficient, accurate, predictable, accessible, auditable, and resilient.
+Product UI is designed for software people use repeatedly to complete real work. The interface must make complex tasks understandable, efficient, accurate, predictable, accessible, auditable, and resilient.
 
 ```text
 Clear structure
@@ -710,4 +710,4 @@ The agent must not optimize only for screenshots or remove required information 
 
 ## 28. Final rule
 
-A modern enterprise interface should disappear into the work. Users should spend their attention on decisions, exceptions, and outcomes—not on discovering how the interface behaves.
+A modern product interface should disappear into the work. Users should spend their attention on decisions, exceptions, and outcomes—not on discovering how the interface behaves.

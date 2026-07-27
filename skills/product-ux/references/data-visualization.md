@@ -1,4 +1,4 @@
-# Modern Enterprise Data Visualization
+# Product Data Visualization
 
 > Brand-neutral reference for dashboards, KPI systems, data tables, charts, diagrams, status visualization, reporting, monitoring, and accessible analytics in enterprise applications.
 
@@ -6,7 +6,7 @@
 
 ## 1. Purpose
 
-Enterprise data visualization should help users understand current state, identify exceptions, compare values, detect change, diagnose causes, verify evidence, make decisions, and take action.
+Product data visualization should help users understand current state, identify exceptions, compare values, detect change, diagnose causes, verify evidence, make decisions, and take action.
 
 A dashboard is not a collection of charts. It is a structured decision interface.
 
@@ -670,4 +670,4 @@ An AI agent must:
 
 ## 35. Final rule
 
-An enterprise visualization succeeds when the user can understand what happened, verify why it matters, reach the underlying records, and take the correct next action.
+A product visualization succeeds when the user can understand what happened, verify why it matters, reach the underlying records, and take the correct next action.

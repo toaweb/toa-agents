@@ -54,6 +54,16 @@ recollection of a style is vague and drifts.
 Modern corporate lives as its own full skill because it carries scripts and
 token assets (compliance checker, tokens.css); this catalogue defers to it.
 
+## Not in this catalogue
+
+This catalogue covers **public** surfaces — websites, marketing, editorial.
+Interfaces behind a login belong to the `product-ux` skill, and so do their
+visual treatments: flat/elevated, glassmorphism, neumorphism and
+skeuomorphic controls are documented there with the safety constraints a
+product surface requires. Do not treat them as styles from this catalogue,
+and do not apply a catalogue style to a product surface as a substitute for
+the product-UX rules.
+
 Adding a style = adding its definition (and asset guide) + one row here.
 A definition must be complete enough to design from without external
 lookups: purpose, principles, layout, typography, color roles (neutral),

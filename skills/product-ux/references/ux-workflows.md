@@ -1,4 +1,4 @@
-# Modern Enterprise UX Workflows
+# Product UX Workflows
 
 > Brand-neutral UX reference for admin panels, enterprise software, operations systems, SaaS back offices, logistics tools, regulated applications, and data-heavy workflows.
 
@@ -6,7 +6,7 @@
 
 ## 1. Purpose
 
-Enterprise UX supports repeated work under real constraints. Users may process high volumes, work under deadlines, handle incomplete data, correct others' work, follow regulations, collaborate across roles, or approve high-impact actions.
+Product UX supports repeated work under real constraints. Users may process high volumes, work under deadlines, handle incomplete data, correct others' work, follow regulations, collaborate across roles, or approve high-impact actions.
 
 The UX must support both efficiency and safety.
 
@@ -727,4 +727,4 @@ An AI agent must:
 
 ## 37. Final rule
 
-A good enterprise workflow makes the correct action obvious, the risky action deliberate, the system state visible, and recovery possible.
+A good product workflow makes the correct action obvious, the risky action deliberate, the system state visible, and recovery possible.
