@@ -1,6 +1,6 @@
 ---
 name: product-ux
-description: Product UI/UX for authenticated application interfaces — admin panels, dashboards, SaaS apps, user and customer portals, operational control panels, mobile products, data tables, complex forms, workflows and AI-assisted features. Covers the foundations they rest on (design tokens, component states, surfaces and affordance, dark mode, UI copy, illustration, accessibility) and constrained visual treatments for product surfaces (flat/elevated, glassmorphism, neumorphism, skeuomorphic controls). Use for anything behind a login: "build an admin dashboard", "design this settings page", "how should this table/filter/bulk action work", "what should this error say", "should this panel be glass". Separate from the design-styles catalogue, which covers public websites and marketing pages. Brand-neutral and framework-neutral — brand values come from the project; defer implementation mechanics to the framework and Tailwind skills.
+description: Product UI/UX for authenticated application interfaces — admin panels, dashboards, SaaS apps, user and customer portals, operational control panels, mobile products. Covers shared patterns (navigation, tables and bulk actions, forms and validation, search and saved views, permissions and audit, loading/empty/error feedback), the foundations under them (design tokens, color, typography, spacing, motion and icons, surfaces and affordance, dark mode, component states, UI copy, illustration, accessibility) and constrained visual treatments for product surfaces (flat/elevated, glassmorphism, neumorphism, skeuomorphic controls). Use for anything behind a login: "build an admin dashboard", "design this settings page", "how should this table/filter/bulk action work", "what should this error say". Separate from the design-styles catalogue, which covers public websites. Brand-neutral and framework-neutral; defer implementation mechanics to the framework and Tailwind skills.
 ---
 
 # Product UX
@@ -9,6 +9,9 @@ Interfaces used *after authentication* — products, not marketing pages.
 They are judged by task completion, not visual impression. This skill
 routes to normative references; read the relevant one in full before
 designing, never from memory.
+
+`references/` is a complete 1:1 mirror of the Product UI/UX Library 2026
+(v2), 32 documents. Nothing here is a summary — go to the file.
 
 ## Scope boundary
 
@@ -43,53 +46,76 @@ safety, law, and platform requirements
 A visual treatment must never override task clarity, component semantics,
 state visibility, accessibility, or operational safety.
 
+**Depth rule.** The shared patterns are the compact entry point for one
+pattern. `ui-design-system.md` and `ux-workflows.md` cover the same ground
+operationally and in far more depth. Where they go further or disagree,
+they win — read the shared pattern to orient, the core reference to design.
+
 ## Workflow
 
 1. **Classify the surface**, then read its application-type reference in
    full — `saas-product-ui.md`, `user-portal-ui.md`,
    `customer-portal-ui.md`, `analytics-dashboard-ui.md` or
    `operational-control-panel-ui.md`. If none fits, the surface is a
-   generic admin/internal tool: use the core references below.
+   generic admin/internal tool: go straight to the core references.
 
-2. **Read the core references the task touches** —
+2. **Read the shared pattern for the task** — navigation, tables, forms,
+   search, permissions, or feedback states. One file, fast orientation.
+
+3. **Read the core reference(s) the task touches** —
    `ui-design-system.md` (structure, components, density, tables, forms),
    `ux-workflows.md` (task flows, search/filter, bulk actions,
    permissions, notifications, error/empty/loading),
    `data-visualization.md` (charts, dashboards, metrics).
    Most real tasks span two; read both rather than guessing.
 
-3. **Read the foundations the task touches** — tokens, component states,
-   surfaces and affordance, dark mode, UI copy, illustration,
-   accessibility. See the table below.
+4. **Read the foundations the task touches** — see the table below.
+   These state product-side *rules*; the mechanics of expressing them as
+   tokens and utilities belong to the Tailwind skill.
 
-4. **Add cross-cutting rules** where they apply: `mobile-product-ui.md`
+5. **Add cross-cutting rules** where they apply: `mobile-product-ui.md`
    for mobile or native surfaces, `ai-assisted-interactions.md` for any
    generated, suggested or agentic behavior.
 
-5. **Only then choose a visual treatment**, and only after the functional
+6. **Only then choose a visual treatment**, and only after the functional
    model and every state are defined. Read the treatment's constraints in
    full — each one lists contexts it must not be used in.
 
-6. **Apply the project's brand values on top** (brand source: MCP server,
+7. **Apply the project's brand values on top** (brand source: MCP server,
    `brand.json`, or tokens — ask if absent, never invent).
 
-7. Respect the references' normative language (must/should/may). Keyboard
+8. Respect the references' normative language (must/should/may). Keyboard
    paths, focus, and ARIA on complex widgets are part of done.
 
-8. When changing a shared design system rather than one screen —
+9. When changing a shared design system rather than one screen —
    `design-system-governance.md`.
 
-9. Defer code mechanics to the framework/Tailwind skills.
+10. Defer code mechanics to the framework/Tailwind skills.
 
 ## Reference files
 
 ### Core product UX
+
+The deep operational references. Authoritative on anything they cover.
 
 | File | Contents |
 |---|---|
 | `references/ui-design-system.md` | Product UI system: layout/density, navigation chrome, tables, forms, feedback (incl. toasts), states, component rules |
 | `references/ux-workflows.md` | Workflow patterns: task flows, search & filtering, bulk actions, permissions, notifications policy, error/empty/loading behavior |
 | `references/data-visualization.md` | Data visualization: chart selection, dashboards, metrics presentation, visualization accessibility |
+
+### Shared patterns
+
+One pattern per file — the fast route in. See the depth rule above.
+
+| File | Contents |
+|---|---|
+| `references/navigation-information-architecture.md` | Navigation levels, side vs top nav, tabs, breadcrumbs, back behavior, workspace switching, deep links, command palette |
+| `references/tables-data-grids-bulk-actions.md` | Choosing table vs list vs cards, table anatomy, columns, sorting, selection scope, bulk actions, inline editing, pagination |
+| `references/forms-validation.md` | Field economy, structure, labels, validation timing, error messages and summaries, data preservation, drafts, multi-step, review, submission |
+| `references/search-filtering-saved-views.md` | Search scope, query behavior, filter logic and values, applied-filter display, saved and shared views, URL state, persistence |
+| `references/permissions-roles-audit.md` | Permission model, hidden vs disabled, explaining refusal, role management, invitations, approvals, high-impact actions, audit and version history |
+| `references/feedback-loading-empty-error.md` | Feedback levels, loading, success, errors, partial success, empty states, offline and stale data, notifications, banners vs dialogs, session timeout |
 
 ### Application types
 
@@ -113,9 +139,13 @@ state visibility, accessibility, or operational safety.
 | File | Contents |
 |---|---|
 | `references/design-tokens.md` | Token layers (primitive → semantic → component), naming, required domains, theme architecture, canonical source, versioning & deprecation |
-| `references/component-anatomy-states.md` | Component API and anatomy, state model, disabled vs read-only, loading, empty, error, composition, variants, maturity, quality gates |
+| `references/color-system.md` | Semantic color roles, surface and text hierarchy, action and focus color, status, dark mode, forced colors, data-viz palettes, personalization |
+| `references/typography-system.md` | Type roles, typeface requirements, size/line-height, measure, numbers and units, responsive type, multilingual and bidi, truncation, font performance |
+| `references/spacing-layout-responsive.md` | Spacing scale, density, application shell, canonical layouts, adaptive classes, recomposition, safe areas, zoom and reflow, container queries |
+| `references/motion-iconography.md` | Motion categories and easing, reduced motion, pause/stop/hide, loading and progress, icon system, functional and accessible icons, status symbols |
 | `references/affordance-depth-and-surfaces.md` | What reads as interactive: surface hierarchy, affordance cues, flat vs bordered vs elevated, elevation semantics, tonal surfaces, drag, forced colors |
 | `references/dark-mode-theme-system.md` | Light/dark as a theme system: semantic roles per appearance, system/light/dark user control, contrast per state, theme-specific assets, charts, code, focus |
+| `references/component-anatomy-states.md` | Component API and anatomy, state model, disabled vs read-only, loading, empty, error, composition, variants, maturity, quality gates |
 | `references/content-design.md` | UI copy: labels, headings, instructions, error and empty-state text, confirmations, terminology, units, localization, AI-generated content |
 | `references/product-illustration-system.md` | Illustration inside products: roles, productive vs expressive, scale tiers, representation of people, technical accuracy, alt-text decisions, rights |
 | `references/accessibility-foundations.md` | Keyboard access, focus management, accessible names, dynamic updates, contrast, reflow, motion safety, testing strategy |
@@ -141,7 +171,9 @@ states the contexts its treatment must **not** be used in.
 ## Boundaries
 
 Not for marketing/editorial websites — that is design-styles territory.
-Not a styling skill (Tailwind skill) and not a component-code skill
+Not a styling skill: `color-system.md`, `typography-system.md` and
+`spacing-layout-responsive.md` set product rules, while Tailwind/token
+mechanics belong to the Tailwind skill. Not a component-code skill
 (framework skills). `content-design.md` covers product UX writing —
 language correctness and bilingual parity belong to the copy-editing
 skill. This skill owns product-UX structure and behavior.
