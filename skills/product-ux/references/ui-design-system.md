@@ -2,7 +2,7 @@
 
 > Brand-neutral reference for admin panels, enterprise applications, SaaS back offices, operations systems, ERP, logistics tools, regulated workflows, and data-heavy web applications.
 >
-> This document defines the visual and structural UI system. Workflow rules belong in `modern-enterprise-ux-workflows.md`; dashboards and data presentation belong in `modern-enterprise-data-visualization.md`.
+> This document defines the visual and structural UI system. Workflow rules belong in `ux-workflows.md`; dashboards and data presentation belong in `data-visualization.md`.
 
 ---
 
