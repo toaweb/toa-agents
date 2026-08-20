@@ -12,6 +12,9 @@ are the single source of truth for the style. Never design a named style
 from memory: definitions are versioned here precisely because a model's
 recollection of a style is vague and drifts.
 
+**Do not** use legacy `toa-rules/design/styles*` files as the style catalogue.
+Those are historical trend notes. **This skill is canonical.**
+
 ## Workflow
 
 1. Identify which style the user is asking for. If the request is ambiguous
@@ -23,10 +26,10 @@ recollection of a style is vague and drifts.
    whenever the task involves imagery, illustration, photography or
    graphic assets.
 3. Apply the project's brand values (colors, fonts, logo, voice) **on top
-   of** the style. A style is method; a brand is identity. Find the
-   project's brand source (brand MCP server, `brand.json`, token files, or
-   a path the user names); if the work needs brand values and none exists,
-   ask — never invent them.
+   of** the style. A style is method; a brand is identity. Prefer **toa-mcp**
+   tools `get_brand` / `get_token_scale` when the brand MCP is connected;
+   otherwise `brand.json`, token files, or a path the user names. If brand
+   values are required and none exist, ask — never invent them.
 4. Respect each definition's normative language (must/should/may) and its
    accessibility and performance requirements — they are part of the style,
    not optional extras.
