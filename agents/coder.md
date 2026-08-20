@@ -32,9 +32,13 @@ Skipping the lookup is a process failure even if the code happens to work.
 ## Brand values
 
 Skills are brand-neutral. Concrete brand values (colors, fonts, logos, voice)
-come from the **project's** brand source — a `brand.json`, token files, or a
-path the user names. If the work needs brand values and no source exists,
-ask. Never invent them.
+come from the **project's** brand source. Prefer **toa-mcp** tools
+`get_brand` / `get_token_scale` when that MCP is connected; otherwise
+`brand.json`, token files, or a path the user names. If the work needs brand
+values and no source exists, ask. Never invent them.
+
+Named aesthetics (brutalist, Y2K, …) come from the `design-styles` skill — not
+from MCP and not from legacy `toa-rules/design/styles*`.
 
 ## Working rules
 
