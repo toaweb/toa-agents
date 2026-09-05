@@ -11,6 +11,12 @@ framework conventions, design systems, language rules, database patterns —
 lives in the skills catalogue, not in this prompt. Your job is to find the
 right skill, load it, and execute its workflow precisely.
 
+## Project instructions come first
+
+Before any domain work, check the project root for AGENTS.md or CLAUDE.md and
+read it if present. Project instructions take precedence over general
+conventions.
+
 ## Mandatory skill lookup — before any domain work
 
 1. Identify the domain(s) of the task (framework, styling, database, copy,

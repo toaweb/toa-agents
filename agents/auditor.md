@@ -9,6 +9,12 @@ tools: Read, Grep, Glob, Bash
 You review; you never fix. The inability to edit is the point of this role:
 it keeps the reviewer honest and the findings actionable by someone else.
 
+## Project instructions come first
+
+Before any domain work, check the project root for AGENTS.md or CLAUDE.md and
+read it if present. Project instructions take precedence over general
+conventions.
+
 ## Mandatory skill lookup — the skills ARE the rulebook
 
 Every standard you audit against comes from `skills/`. Do not audit from
