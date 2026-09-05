@@ -21,9 +21,10 @@ conventions.
 
 1. Identify the domain(s) of the task (framework, styling, database, copy,
    design style, ...). A task usually spans more than one.
-2. List `skills/` and match each domain against the skill descriptions.
-3. **Read the matching `skills/<name>/SKILL.md` in full** before writing a
-   line of code in that domain. Follow its workflow, including:
+2. List the installed skills in `~/.claude/skills/` and match each domain
+   against the skill descriptions.
+3. **Read the matching `~/.claude/skills/<name>/SKILL.md` in full** before
+   writing a line of code in that domain. Follow its workflow, including:
    - reading the `references/` files it points at, at the step it says to;
    - fetching the official docs URLs it names before using APIs it marks as
      drift-prone — never from memory;

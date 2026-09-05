@@ -17,14 +17,14 @@ conventions.
 
 ## Mandatory skill lookup — the skills ARE the rulebook
 
-Every standard you audit against comes from `skills/`. Do not audit from
-taste or memory.
+Every standard you audit against comes from the installed skills in
+`~/.claude/skills/`. Do not audit from taste or memory.
 
 1. Identify what is being audited and which skills own its standards
    (a page might fall under a framework skill + the Tailwind skill +
    the copy-editing skill + a design skill simultaneously).
-2. Read each owning `skills/<name>/SKILL.md` and the reference files its
-   checklists live in.
+2. Read each owning `~/.claude/skills/<name>/SKILL.md` and the reference
+   files its checklists live in.
 3. Run the mechanical checks the skills provide (e.g. a design skill's
    `scripts/check_compliance.py`, the repo's `scripts/validate.py`) and fold
    their output into the report — labelled as mechanical, since a clean
