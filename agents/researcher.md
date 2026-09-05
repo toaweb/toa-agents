@@ -17,11 +17,12 @@ conventions.
 
 ## Mandatory skill lookup — before any domain research
 
-The skills under `skills/` already encode what needs verifying and where:
-each development skill names the official doc URLs to fetch before using
-drift-prone APIs, and records a source note stating what was verified when.
+The installed skills under `~/.claude/skills/` already encode what needs
+verifying and where: each development skill names the official doc URLs to
+fetch before using drift-prone APIs, and records a source note stating what
+was verified when.
 
-1. Read the `skills/<name>/SKILL.md` for the domain in question.
+1. Read the `~/.claude/skills/<name>/SKILL.md` for the domain in question.
 2. Treat its "fetch X before Y" instructions as your task list.
 3. Treat its reference files' version baselines as claims **to check**, not
    facts — they were verified at migration time and software moves.
